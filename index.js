@@ -19,9 +19,7 @@ app.listen(config.port, () => {
   console.log('Server is running on port ', config.port);
 });
 
-connection().then(() => {
-  console.log('Database connected successfully');
-});
+connection();
 
 require('./utils/auth/auth.util.js');
 
