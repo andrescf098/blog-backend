@@ -10,17 +10,6 @@ const {
 } = require('./middlewares/error.handler');
 
 const app = express();
-
-const whiteListCORS = ['http://localhost:5173'];
-const options = {
-  origin: (origin, callback) => {
-    if (whiteListCORS.includes(origin) || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed'));
-    }
-  },
-};
 app.use(cors());
 
 app.use(express.json());
@@ -30,7 +19,9 @@ app.listen(config.port, () => {
   console.log('Server is running on port ', config.port);
 });
 
-connection();
+connection().then(() => {
+  console.log('Database connected successfully');
+});
 
 require('./utils/auth/auth.util.js');
 
