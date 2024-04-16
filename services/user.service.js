@@ -1,7 +1,7 @@
-const Model = require("../models/User");
-const ModelArticle = require("../models/Article");
-const boom = require("@hapi/boom");
-const bcrypt = require("bcrypt");
+const Model = require('../models/User');
+const ModelArticle = require('../models/Article');
+const boom = require('@hapi/boom');
+const bcrypt = require('bcrypt');
 
 async function find() {
   const users = await Model.find().sort({ createAt: -1 });
@@ -32,7 +32,7 @@ async function findOne(id) {
     role: user.role,
   };
   if (!user) {
-    throw boom.notFound("User not found");
+    throw boom.notFound('User not found');
   }
   if (!articles) {
     return userData;
@@ -45,9 +45,9 @@ async function findOne(id) {
 }
 
 async function findByEmail(email) {
-  let user = await Model.findOne({ email: email }).select("+password");
+  let user = await Model.findOne({ email: email }).select('+password');
   if (!user) {
-    throw boom.notFound("User not found");
+    throw boom.notFound('User not found');
   }
   return user;
 }
@@ -58,7 +58,9 @@ async function create(data) {
     ...data,
     password: hash,
   });
+
   await newUser.save();
+  delete newUser.password;
   return newUser;
 }
 
@@ -71,13 +73,13 @@ async function update(id, data) {
     };
     const user = await Model.findByIdAndUpdate(id, dataUpdate, { new: true });
     if (!user) {
-      throw boom.notFound("User not found");
+      throw boom.notFound('User not found');
     }
     return user;
   } else {
     const user = await Model.findByIdAndUpdate(id, data, { new: true });
     if (!user) {
-      throw boom.notFound("User not found");
+      throw boom.notFound('User not found');
     }
     return user;
   }
